@@ -26,10 +26,10 @@ function App() {
   const [activeTab, setActiveTab] = useState('command-deck');
   
   // Persisted state
-  const [activities, setActivities] = useLocalStorage('clawbuddy_activities', initialActivities);
-  const [agents, setAgents] = useLocalStorage('clawbuddy_agents', initialAgents);
-  const [logs, setLogs] = useLocalStorage('clawbuddy_logs', initialLogs);
-  const [tasks, setTasks] = useLocalStorage('clawbuddy_tasks', initialTasks);
+  const [activities, setActivities] = useLocalStorage('clawmatrix_activities', initialActivities);
+  const [agents, setAgents] = useLocalStorage('clawmatrix_agents', initialAgents);
+  const [logs, setLogs] = useLocalStorage('clawmatrix_logs', initialLogs);
+  const [tasks, setTasks] = useLocalStorage('clawmatrix_tasks', initialTasks);
 
   // Run live simulation
   useSimulation({ setActivities, setLogs, setAgents });

@@ -34,7 +34,7 @@ const Sidebar = ({ tabs, activeTab, onTabChange, isCollapsed, setIsCollapsed }) 
             <div className="w-8 h-8 rounded-lg bg-primary-accent flex items-center justify-center text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]">
               <span className="font-black text-xl">C</span>
             </div>
-            <span className="font-bold text-xl tracking-tighter text-white">ClawBuddy</span>
+            <span className="font-bold text-xl tracking-tighter text-white">ClawMatrix</span>
           </motion.div>
         )}
         <button 
