@@ -35,7 +35,7 @@ const MetricCard = ({ title, value, trend, icon: Icon, color }) => (
 const CommandDeck = ({ activities, agents }) => {
   return (
     <div className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         <MetricCard title="Total Tasks" value="1,284" trend="+12%" icon={CheckCircle} color="primary-accent" />
         <MetricCard title="Active Agents" value="3" trend="Stable" icon={Users} color="cyan-accent" />
         <MetricCard title="System Uptime" value="99.9%" trend="+0.1%" icon={Activity} color="emerald-accent" />
@@ -60,7 +60,7 @@ const CommandDeck = ({ activities, agents }) => {
                   className="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5"
                 >
                   <div className="w-10 h-10 rounded-full bg-surface-border flex items-center justify-center text-xl shrink-0">
-                    {activity.agent}
+                    {activity.agent || '🤖'}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-white font-medium truncate">{activity.action}</p>
@@ -80,7 +80,7 @@ const CommandDeck = ({ activities, agents }) => {
               <div key={agent.id} className="glass-card p-4 flex items-center gap-4 hover:border-white/10 transition-colors">
                 <div className="relative">
                   <div className="w-12 h-12 rounded-xl bg-surface-border flex items-center justify-center text-2xl">
-                    {agent.emoji}
+                    {agent.emoji || agent.avatar || '🤖'}
                   </div>
                   <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-4 border-background-custom ${
                     agent.status === 'active' ? 'bg-emerald-500' : 'bg-amber-500'
@@ -88,11 +88,11 @@ const CommandDeck = ({ activities, agents }) => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="text-sm font-bold text-white">{agent.name}</h4>
-                  <p className="text-xs text-muted truncate">{agent.activity}</p>
+                  <p className="text-xs text-muted truncate">{agent.activity || 'Scaling neural nodes...'}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-[10px] text-muted uppercase tracking-tighter">Last Seen</p>
-                  <p className="text-xs text-white font-medium">{agent.lastSeen}</p>
+                  <p className="text-xs text-white font-medium">{agent.lastSeen || 'online'}</p>
                 </div>
               </div>
             ))}

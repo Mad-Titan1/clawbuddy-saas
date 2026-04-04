@@ -1,51 +1,51 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  LayoutDashboard, Users, CheckSquare, ListTodo, Users2, 
-  Calendar, Settings, ChevronLeft, ChevronRight, LogOut, Sparkles
+  Calendar, Settings, ChevronLeft, ChevronRight, LogOut, Sparkles,
+  Network, Cpu, MessageSquare, ShoppingBag, TrendingUp, CheckSquare, ListTodo, Users, Users2, LayoutDashboard,
+  Menu, X, Share2, Coins, FolderCode
 } from 'lucide-react';
 
-const Sidebar = ({ tabs, activeTab, onTabChange, isCollapsed, setIsCollapsed }) => {
+const Sidebar = ({ tabs, activeTab, onTabChange, isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen }) => {
   const getIcon = (id) => {
     switch (id) {
       case 'command-deck': return LayoutDashboard;
+      case 'flow-state': return Share2;
       case 'agents': return Users;
       case 'task-board': return CheckSquare;
       case 'ai-log': return ListTodo;
+      case 'neural-map': return Network;
+      case 'system-monitor': return Cpu;
+      case 'comm-hub': return MessageSquare;
+      case 'marketplace': return ShoppingBag;
+      case 'roi': return TrendingUp;
+      case 'usage-hub': return Coins;
+      case 'neural-vault': return FolderCode;
       case 'council': return Users2;
       case 'meetings': return Calendar;
       default: return LayoutDashboard;
     }
   };
 
-  return (
-    <motion.aside
-      initial={false}
-      animate={{ width: isCollapsed ? '80px' : '280px' }}
-      className="fixed left-0 top-0 h-screen premium-sidebar z-50 flex flex-col"
-    >
-      <div className="p-6 flex items-center justify-between overflow-hidden">
-        {!isCollapsed && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex items-center gap-2"
-          >
-            <div className="w-8 h-8 rounded-lg bg-primary-accent flex items-center justify-center text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]">
-              <span className="font-black text-xl">C</span>
-            </div>
-            <span className="font-bold text-xl tracking-tighter text-white">ClawMatrix</span>
-          </motion.div>
-        )}
+  const SidebarContent = () => (
+    <>
+      <div className="p-6 flex items-center justify-between border-b border-white/5 h-[88px]">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-primary-accent flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+            <span className="text-xl font-black text-background-custom italic">C</span>
+          </div>
+          {!isCollapsed && <span className="text-xl font-black text-white tracking-tighter whitespace-nowrap">ClawMatrix</span>}
+        </div>
+        
         <button 
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-muted transition-colors"
+          onClick={() => isMobileOpen ? setIsMobileOpen(false) : setIsCollapsed(!isCollapsed)}
+          className="p-2 rounded-xl bg-white/5 border border-white/10 text-muted hover:text-white transition-all"
         >
-          {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+          {isMobileOpen ? <X size={20} /> : (isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />)}
         </button>
       </div>
 
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto no-scrollbar">
         {tabs.map((tab) => {
           const Icon = getIcon(tab.id);
           const isActive = activeTab === tab.id;
@@ -62,7 +62,7 @@ const Sidebar = ({ tabs, activeTab, onTabChange, isCollapsed, setIsCollapsed }) 
               {!isCollapsed && (
                 <span className="font-medium text-sm whitespace-nowrap">{tab.label}</span>
               )}
-              {isActive && (
+              {isActive && !isCollapsed && (
                 <motion.div 
                   layoutId="sidebar-active"
                   className="absolute right-2 w-1.5 h-1.5 rounded-full bg-primary-accent shadow-[0_0_10px_rgba(16,185,129,0.8)]"
@@ -74,7 +74,7 @@ const Sidebar = ({ tabs, activeTab, onTabChange, isCollapsed, setIsCollapsed }) 
       </nav>
 
       <div className="p-4 border-t border-white/5 space-y-4">
-        {!isCollapsed && (
+        {!isCollapsed && !isMobileOpen && (
           <div className="p-3 rounded-xl bg-primary-accent/5 border border-primary-accent/10">
             <div className="flex items-center gap-2 text-[10px] font-bold text-primary-accent uppercase tracking-widest mb-2">
               <Sparkles size={10} />
@@ -91,7 +91,44 @@ const Sidebar = ({ tabs, activeTab, onTabChange, isCollapsed, setIsCollapsed }) 
           {!isCollapsed && <span className="font-medium text-sm">Logout</span>}
         </button>
       </div>
-    </motion.aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <div className="lg:hidden fixed inset-0 z-[100] flex">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileOpen(false)}
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm"
+            />
+            <motion.aside
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="w-[280px] h-full bg-background-custom border-r border-white/5 flex flex-col shadow-2xl z-[101]"
+            >
+              <SidebarContent />
+            </motion.aside>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop Sidebar (Persistent) */}
+      <aside 
+        className={`hidden lg:flex flex-col sticky top-0 h-screen bg-background-custom border-r border-white/5 transition-all duration-300 flex-shrink-0 ${
+          isCollapsed ? 'w-20' : 'w-[280px]'
+        }`}
+      >
+        <SidebarContent />
+      </aside>
+    </>
   );
 };
 

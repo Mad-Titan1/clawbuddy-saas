@@ -18,6 +18,17 @@
   --font-mono: "JetBrains Mono", monospace;
 }
 
+:root[data-crisis="true"] {
+  --color-background-custom: #0f0505;
+  --color-surface: rgba(28, 13, 13, 0.8);
+  --color-surface-hover: rgba(42, 20, 20, 0.9);
+  --color-surface-border: rgba(239, 68, 68, 0.2);
+  --color-primary-accent: #ef4444;
+  --color-primary-glow: rgba(239, 68, 68, 0.5);
+  --color-cyan-accent: #f97316;
+  --color-cyan-glow: rgba(249, 115, 22, 0.4);
+}
+
 @layer base {
   :root {
     background-color: var(--color-background-custom);
@@ -85,6 +96,35 @@
   50% {
     box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
   }
+}
+
+.crisis-pulse {
+  animation: crisis-pulse 2s infinite;
+}
+
+@keyframes crisis-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.6);
+    border-color: rgba(239, 68, 68, 0.8);
+  }
+}
+
+.crisis-shake {
+  animation: crisis-shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@keyframes crisis-shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
 }
 
 /* Custom scrollbar */

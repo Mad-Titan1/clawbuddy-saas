@@ -11,9 +11,25 @@ export const agents = [
     status: 'active',
     tasksCompleted: 427,
     accuracy: '99.4%',
+    level: 42,
+    xp: 840,
+    maxXp: 1000,
     skills: ['TypeScript', 'Node.js', 'PostgreSQL', 'System Architecture'],
     activity: 'Optimizing database queries',
-    lastSeen: 'just now'
+    lastSeen: 'just now',
+    usage: {
+      model: 'GPT-4o',
+      inputTokens: 1245000,
+      outputTokens: 450000,
+      avgCostPerMillion: 5.00
+    },
+    browsingState: {
+      active: true,
+      url: 'https://github.com/microsoft/autogen/issues/142',
+      title: 'AutoGen: Issue #142 - Protocol implementation for multi-agent sync',
+      action: 'Extracting comment thread for task correlation',
+      step: 4
+    }
   },
   {
     id: 'dispatch-bot',
@@ -25,9 +41,25 @@ export const agents = [
     status: 'idle',
     tasksCompleted: 892,
     accuracy: '98.2%',
+    level: 56,
+    xp: 210,
+    maxXp: 1200,
     skills: ['Resource Allocation', 'Priority Management', 'Cross-Agent Sync'],
     activity: 'Assigning new triage tickets',
-    lastSeen: '5m ago'
+    lastSeen: '5m ago',
+    usage: {
+      model: 'Claude 3.5 Sonnet',
+      inputTokens: 850000,
+      outputTokens: 120000,
+      avgCostPerMillion: 3.00
+    },
+    browsingState: {
+      active: false,
+      url: '',
+      title: '',
+      action: '',
+      step: 0
+    }
   },
   {
     id: 'audit-bot',
@@ -39,10 +71,36 @@ export const agents = [
     status: 'active',
     tasksCompleted: 156,
     accuracy: '100%',
+    level: 28,
+    xp: 750,
+    maxXp: 800,
     skills: ['Security Auditing', 'Code Review', 'SLA Monitoring'],
     activity: 'Scanning PR #452 for security vulnerabilities',
-    lastSeen: '2m ago'
+    lastSeen: '2m ago',
+    usage: {
+      model: 'GPT-4o-mini',
+      inputTokens: 4200000,
+      outputTokens: 980000,
+      avgCostPerMillion: 0.15
+    },
+    browsingState: {
+      active: true,
+      url: 'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-38112',
+      title: 'CVE-2024-38112: Windows MSHTML Platform Spoofing Vulnerability',
+      action: 'Verifying dependency patch status against CVE database',
+      step: 2
+    }
   }
+];
+
+export const consumptionHistory = [
+  { date: '03/28', cost: 12.4 },
+  { date: '03/29', cost: 15.8 },
+  { date: '03/30', cost: 9.2 },
+  { date: '03/31', cost: 22.1 },
+  { date: '04/01', cost: 18.5 },
+  { date: '04/02', cost: 14.8 },
+  { date: '04/03', cost: 11.2 },
 ];
 
 export const activities = [
@@ -176,5 +234,73 @@ export const meetings = [
     sentiment: "positive",
     has_external_participants: false,
     external_domains: []
+  }
+];
+export const neuralRepositories = [
+  {
+    id: 'repo-alpha-auth',
+    name: 'Secure-Gate-v2',
+    agentId: 'agent-alpha',
+    emoji: '🔐',
+    lastSync: 'just now',
+    status: 'deployed',
+    vps: 'aws-node-742',
+    files: [
+      { 
+        id: 'f1', name: 'auth_middleware.ts', language: 'typescript', 
+        content: `import { Request, Response, NextFunction } from 'express';
+import { NeuralToken } from '@clawmatrix/security';
+
+export const protectNode = (req: Request, res: Response, next: NextFunction) => {
+  const sentinelId = req.headers['x-sentinel-id'];
+  
+  if (!sentinelId) {
+    return res.status(401).json({ error: 'Sentinel signature missing' });
+  }
+
+  const isValid = NeuralToken.verify(sentinelId);
+  if (!isValid) {
+    return res.status(403).json({ error: 'Neural verification failed' });
+  }
+
+  next();
+};`
+      },
+      { 
+        id: 'f2', name: 'package.json', language: 'json', 
+        content: `{
+  "name": "secure-gate-v2",
+  "version": "2.1.0",
+  "dependencies": {
+    "express": "^4.18.2",
+    "@clawmatrix/security": "latest"
+  }
+}`
+      }
+    ]
+  },
+  {
+    id: 'repo-dispatch-db',
+    name: 'Logistics-Core',
+    agentId: 'dispatch-bot',
+    emoji: '🚚',
+    lastSync: '5m ago',
+    status: 'optimizing',
+    vps: 'digital-node-12',
+    files: [
+      { 
+        id: 'f3', name: 'triage_logic.py', language: 'python', 
+        content: `class Dispatcher:
+    def __init__(self, node_id):
+        self.node_id = node_id
+        self.priority_queue = []
+
+    def assign_ticket(self, agent_id, priority):
+        """Neural priority allocation logic"""
+        if priority > 0.8:
+            return f"Fast-tracking ticket to {agent_id}"
+        return "Queueing standard request"`
+      }
+    ]
   }
 ];
