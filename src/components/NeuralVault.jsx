@@ -252,6 +252,24 @@ const NeuralVault = ({ agents }) => {
             </div>
             <span>CHARACTERS: {selectedFile?.content.length} | UTF-8 | LF</span>
           </div>
+
+          {/* Notification Overlay */}
+          <AnimatePresence>
+            {isDownloading && (
+              <motion.div 
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 50 }}
+                className="absolute bottom-16 right-8 z-[60] bg-emerald-500 text-background-custom px-4 py-3 rounded-xl flex items-center gap-3 shadow-2xl shadow-emerald-500/20"
+              >
+                <CheckCircle2 size={18} />
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-black uppercase tracking-widest leading-none">Transfer Complete</span>
+                  <span className="text-[8px] font-bold opacity-80 uppercase tracking-tighter">Source layers mirrored to local storage</span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
